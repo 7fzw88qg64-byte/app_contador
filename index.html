@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Contador de Letras</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f3e8ff;
+      text-align: center;
+      padding: 40px;
+      color: #3d315b;
+    }
+
+    .contenedor {
+      background-color: white;
+      padding: 30px;
+      border-radius: 20px;
+      max-width: 500px;
+      margin: auto;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    }
+
+    h1 {
+      color: #6a0dad;
+    }
+
+    input {
+      width: 80%;
+      padding: 12px;
+      font-size: 16px;
+      border: 2px solid #b388eb;
+      border-radius: 10px;
+      margin: 15px 0;
+    }
+
+    button {
+      padding: 12px 20px;
+      background-color: #8e44ad;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    button:hover {
+      background-color: #6c3483;
+    }
+
+    .resultado {
+      margin-top: 25px;
+      text-align: left;
+      background-color: #faf5ff;
+      padding: 20px;
+      border-radius: 15px;
+      font-size: 17px;
+    }
+
+    .resultado p {
+      margin: 10px 0;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="contenedor">
+    <h1>Contador de Letras</h1>
+    <p>Escribe una palabra y descubre cuántas letras tiene.</p>
+
+    <input type="text" id="palabra" placeholder="Escribe una palabra">
+    <br>
+    <button onclick="analizarPalabra()">Analizar</button>
+
+    <div class="resultado" id="resultado">
+      <p>Aquí aparecerá el resultado.</p>
+    </div>
+  </div>
+
+  <script>
+    function analizarPalabra() {
+      let palabra = document.getElementById("palabra").value.toLowerCase();
+      let resultado = document.getElementById("resultado");
+
+      if (palabra === "") {
+        resultado.innerHTML = "<p>Por favor escribe una palabra.</p>";
+        return;
+      }
+
+      palabra = palabra.replaceAll(" ", "");
+
+      let totalLetras = palabra.length;
+      let vocales = 0;
+      let consonantes = 0;
+      let letrasRepetidas = "";
+
+      let conteo = {};
+
+      for (let i = 0; i < palabra.length; i++) {
+        let letra = palabra[i];
+
+        if ("aeiouáéíóú".includes(letra)) {
+          vocales++;
+        } else {
+          consonantes++;
+        }
+
+        if (conteo[letra]) {
+          conteo[letra]++;
+        } else {
+          conteo[letra] = 1;
+        }
+      }
+
+      for (let letra in conteo) {
+        if (conteo[letra] > 1) {
+          letrasRepetidas += letra + ": " + conteo[letra] + " veces<br>";
+        }
+      }
+
+      if (letrasRepetidas === "") {
+        letrasRepetidas = "No hay letras repetidas.";
+      }
+
+      resultado.innerHTML = `
+        <p><strong>Palabra:</strong> ${palabra}</p>
+        <p><strong>Total de letras:</strong> ${totalLetras}</p>
+        <p><strong>Vocales:</strong> ${vocales}</p>
+        <p><strong>Consonantes:</strong> ${consonantes}</p>
+        <p><strong>Letras repetidas:</strong><br>${letrasRepetidas}</p>
+      `;
+    }
+  </script>
+
+</body>
+</html>
